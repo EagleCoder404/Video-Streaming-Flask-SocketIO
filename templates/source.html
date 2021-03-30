@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        video{
+            margin:auto;
+            border-radius: 10px;
+        }
+        canvas
+        {
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <video></video>
+    <canvas></canvas>
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js" integrity="sha384-DkkWv9oJFWLIydBXXjkBWnG1/fuVhw8YPBq37uvvD6WSYRFRqr21eY5Dg9ZhmWdy" crossorigin="anonymous"></script>
+    <script>
+        const width = 640,height=480;
+
+        const sio = io();
+        const video = document.querySelector('video');
+        const canvas = document.querySelector('canvas'); canvas.width=width; canvas.height=height;
+
+        sio.on('connect', () => {
+            console.log("Connected to Server")
+        })
+       sio.on('disconnect', () => {
+            console.log("Disconnected from Server")
+        })
+
+        navigator.mediaDevices.getUserMedia({video:true, audio:false}).then(stream => {
+            video.srcObject = stream;
+            video.play();
+        })
+
+        setInterval(function(){
+           /* canvas.getContext('2d').drawImage(video,0,0,width,height );
+            let data = canvas.toDataURL(); */
+            sio.emit("source image","lol")
+        },100)
+
+
+    </script>
+</body>
+</html>
+
